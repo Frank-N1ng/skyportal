@@ -73,15 +73,16 @@ const useD3 = (renderChartFn) => {
   const ref = useRef();
 
   useEffect(() => {
-    renderChartFn(d3.select(ref.current));
+    renderChartFn(d3.select(ref.current));  // ref.current will be the svg below
     return () => {};
   }, [renderChartFn, ref]);
   return ref;
 };
 
 const Globe = ({ data }) => {
-  const projRef = useRef(d3.geoOrthographic());
+  const projRef = useRef(d3.geoOrthographic());  // projRef.current = d3.geoOrthographic()
 
+  // this is used in useD3
   function renderMap(svg) {
     const path = d3.geoPath().projection(projRef.current);
 
@@ -89,7 +90,7 @@ const Globe = ({ data }) => {
       svg.selectAll("path").attr("d", path);
     }
 
-    d3GeoZoom().projection(projRef.current).onMove(render)(svg.node());
+    d3GeoZoom().projection(projRef.current).onMove(render)(svg.node());  // render, as the call-back function, is supposed to have the object argument {scale, rotation}
 
     if (data) {
       svg
@@ -118,6 +119,10 @@ const Globe = ({ data }) => {
 
   const svgRef = useD3(renderMap);
 
+  // maybe try to set the viewbox size here?
+  svgRef.current
+    .attr("viewBox", [0, 0, 900, 800])
+
   useEffect(() => {
     const height = svgRef.current.clientHeight;
     const width = svgRef.current.clientWidth;
@@ -128,7 +133,7 @@ const Globe = ({ data }) => {
 };
 
 const Localization = ({ loc }) => {
-  const localization = useSelector((state) => state.localization);
+  const localization = useSelector((state) => state.localization);  // check Redux for this part
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -139,7 +144,7 @@ const Localization = ({ loc }) => {
 
   if (!localization) {
     return <CircularProgress />;
-  }
+  } 
 
   return (
     <>
@@ -218,6 +223,8 @@ const GcnEventPage = ({ route }) => {
     </div>
   );
 };
+
+// this part specifies the form of input
 
 Localization.propTypes = {
   loc: PropTypes.shape({
