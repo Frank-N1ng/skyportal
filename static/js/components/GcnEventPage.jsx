@@ -119,17 +119,13 @@ const Globe = ({ data }) => {
 
   const svgRef = useD3(renderMap);
 
-  // maybe try to set the viewbox size here?
-  svgRef.current
-    .attr("viewBox", [0, 0, 900, 800])
-
   useEffect(() => {
     const height = svgRef.current.clientHeight;
     const width = svgRef.current.clientWidth;
     projRef.current.translate([width / 2, height / 2]);
   }, [data, svgRef]);
 
-  return <svg id="globe" ref={svgRef} />;
+  return <svg id="globe" ref={svgRef} width="800px" height="600px"/>;  // maybe add the width and height attributes here?
 };
 
 const Localization = ({ loc }) => {
