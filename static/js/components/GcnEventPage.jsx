@@ -101,7 +101,7 @@ const Globe = ({ data }) => {
         .attr("class", (d) => d.properties.name)
         .attr("d", path)
         .style("fill", "none")
-        .style("stroke", "black")
+        .style("stroke", "red")  // set color to red so I know which part it is
         .style("stroke-width", "0.5px");
     }
 
@@ -125,7 +125,7 @@ const Globe = ({ data }) => {
     projRef.current.translate([width / 2, height / 2]);
   }, [data, svgRef]);
 
-  return <svg id="globe" ref={svgRef} width="800px" height="600px"/>;  // maybe add the width and height attributes here?
+  return <svg id="globe" ref={svgRef} />;
 };
 
 const Localization = ({ loc }) => {
