@@ -73,7 +73,7 @@ const useD3 = (renderChartFn) => {
   const ref = useRef();
 
   useEffect(() => {
-    renderChartFn(d3.select(ref.current));  // ref.current will be the svg below
+    renderChartFn(d3.select(ref.current));
     return () => {};
   }, [renderChartFn, ref]);
   return ref;
@@ -90,8 +90,9 @@ const Globe = ({ data }) => {
       svg.selectAll("path").attr("d", path);
     }
 
-    d3GeoZoom().projection(projRef.current).onMove(render)(svg.node());  // render, as the call-back function, is supposed to have the object argument {scale, rotation}
+    d3GeoZoom().projection(projRef.current).onMove(render)(svg.node());
 
+    // data on the globe, I suppose
     if (data) {
       svg
         .selectAll("path")
@@ -102,9 +103,10 @@ const Globe = ({ data }) => {
         .attr("d", path)
         .style("fill", "none")
         .style("stroke", "red")  // set color to red so I know which part it is
-        .style("stroke-width", "0.5px");
+        .style("stroke-width", "1px");  // try 1 px
     }
 
+    // the pure globe, I suppose
     svg
       .selectAll("path")
       .data([{ type: "Feature", geometry: d3.geoGraticule10() }])
@@ -114,18 +116,19 @@ const Globe = ({ data }) => {
       .attr("d", path)
       .style("fill", "none")
       .style("stroke", "lightgray")
-      .style("stroke-width", "0.5px");
+      .style("stroke-width", "1px");  // try 1 px
   }
 
   const svgRef = useD3(renderMap);
 
+  // set the center to the center
   useEffect(() => {
     const height = svgRef.current.clientHeight;
     const width = svgRef.current.clientWidth;
     projRef.current.translate([width / 2, height / 2]);
   }, [data, svgRef]);
 
-  return <svg id="globe" ref={svgRef} />;
+  return <svg id="globe" ref={svgRef} style="width:800px; height:600px" />;  // how about changing the CSS style?
 };
 
 const Localization = ({ loc }) => {
